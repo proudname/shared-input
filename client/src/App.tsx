@@ -5,7 +5,7 @@ import generateSessionId from "./utils/generateSessionId";
 
 const sessionId = generateSessionId();
 
-const socket = connect('http://localhost:3001', { query: { sessionId }})
+const socket = connect(process.env.REACT_APP_SERVER_URL || '', { query: { sessionId }})
 
 function App() {
 
@@ -13,12 +13,12 @@ function App() {
 
   const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
-      socket.emit('message', value)
       setMessage(value);
+      socket.emit('message', value)
   }
 
   const onSubmit = () => {
-      fetch('http://localhost:3001/input', {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/input`, {
           headers: {
               'Content-Type': 'application/json'
           },
